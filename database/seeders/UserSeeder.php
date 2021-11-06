@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'foto' => "hana.png",
+            'foto' => "Sallie Trixie Zebada Mansurina.jpeg",
             'password' => bcrypt("12345"),
             "departemen" => "Hubungan luar",
             "jabatan" => "Ketua",
@@ -28,11 +28,11 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'artha',
             'email' => 'artha@gmail.com',
-            'foto' => "hana.png",
+            'foto' => "Arya Candra.jpg",
             'password' => bcrypt("071219"),
             "departemen" => "Hubungan luar",
             "jabatan" => "Ketua",
-            "nip" => "10191077",
+            "nip" => "11191012",
             "alamat" => "Jl. Ahmad Yani",
             "no_telp" => "081243942304"
         ]);
