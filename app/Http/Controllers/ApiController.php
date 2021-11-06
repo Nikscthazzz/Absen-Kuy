@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +23,16 @@ class ApiController extends Controller
                     'data' => null
                 ];
         }
+        return response()->json($data);
+    }
+
+    public function getDataUser(User $user)
+    {
+        $data =
+            [
+                'status' => 'Berhasill',
+                'data' => $user
+            ];
         return response()->json($data);
     }
 }
