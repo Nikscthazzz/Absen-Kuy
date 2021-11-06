@@ -15,18 +15,18 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => 'admin',
+            'name' => 'Sallie Trixie Zebada Mansurina',
             'email' => 'admin@gmail.com',
             'foto' => "Sallie Trixie Zebada Mansurina.jpeg",
             'password' => bcrypt("12345"),
-            "departemen" => "Hubungan luar",
+            "departemen" => "Keprofesian",
             "jabatan" => "Ketua",
             "nip" => "10191077",
             "alamat" => "Jl. Ahmad Yani",
             "no_telp" => "081243942304"
         ]);
         User::create([
-            'name' => 'artha',
+            'name' => 'Arya Candra',
             'email' => 'artha@gmail.com',
             'foto' => "Arya Candra.jpg",
             'password' => bcrypt("071219"),
