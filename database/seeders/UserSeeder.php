@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
+            'foto' => "hana.png",
             'password' => bcrypt("12345"),
             "departemen" => "Hubungan luar",
             "jabatan" => "Ketua",
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'artha',
             'email' => 'artha@gmail.com',
+            'foto' => "hana.png",
             'password' => bcrypt("071219"),
             "departemen" => "Hubungan luar",
             "jabatan" => "Ketua",
