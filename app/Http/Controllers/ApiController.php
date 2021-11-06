@@ -9,21 +9,18 @@ class ApiController extends Controller
 {
     public function login(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-        {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $data =
-            [
-                'status'=>'Berhasil',
-                'data'=>Auth::user()
-            ];
-        }
-        else
-        {
+                [
+                    'status' => 'Berhasill',
+                    'data' => Auth::user()
+                ];
+        } else {
             $data =
-            [
-                'status'=>'Gagal',
-                'data'=>null
-            ];
+                [
+                    'status' => 'Gagal',
+                    'data' => null
+                ];
         }
         return response()->json($data);
     }
