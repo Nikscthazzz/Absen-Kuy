@@ -24,3 +24,6 @@ Route::get('/getdatauser/{user}', [ApiController::class, 'getDataUser']);
 
 Route::post("/ubahalamat", [ApiController::class, "ubahAlamat"]);
 Route::post("/ubahnotelp", [ApiController::class, "ubahNoTelp"]);
+
+Route::post("/checkin", [ApiController::class, "checkin"]);
+Route::post("/checkout", [ApiController::class, "checkout"]);
