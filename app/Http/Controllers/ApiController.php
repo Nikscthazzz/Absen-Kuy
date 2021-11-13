@@ -171,7 +171,7 @@ class ApiController extends Controller
     public function izin(Request $request)
     {
         $start_date = Carbon::parse($request->start_date);
-        $end_date = Carbon::parse($request->end_date);
+        $end_date = Carbon::parse($request->end_date)->addDay();
 
         Izin::create([
             "user_id" => $request->user_id,
