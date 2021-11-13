@@ -243,7 +243,7 @@ class ApiController extends Controller
     {
         // looping tanggal bulan ini
         $start_date = Carbon::now()->startOfMonth();
-        $end_date = Carbon::now();
+        $end_date = Carbon::now()->addDay();
         $hadir = 0;
         $tidak_hadir = 0;
         $izin = 0;
