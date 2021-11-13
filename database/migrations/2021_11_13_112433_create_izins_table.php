@@ -17,7 +17,8 @@ class CreateIzinsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string("jenis");
-            $table->date("tanggal");
+            $table->date("tanggal_mulai");
+            $table->date("tanggal_selesai");
             $table->text("keterangan");
             $table->timestamps();
         });

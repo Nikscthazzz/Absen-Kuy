@@ -173,16 +173,19 @@ class ApiController extends Controller
         $start_date = Carbon::parse($request->start_date);
         $end_date = Carbon::parse($request->end_date);
 
+        Izin::create([
+            "user_id" => $request->user_id,
+            "jenis" => $request->jenis,
+            "keterangan" => $request->keterangan,
+            "tanggal_mulai" => $request->start_date,
+            "tanggal_selesai" => $request->end_date,
+        ]);
+
         while (!$start_date->isSameDay($end_date)) {
-            $cek = Izin::where([['user_id', "=", $request->user_id], ["tanggal", "=", $start_date]])->first();
-            if ($cek) {
+            $cekin = Cekin::where([['user_id', "=", $request->user_id], ["tanggal", "=", $start_date]])->first();
+            $cekout = Cekout::where([['user_id', "=", $request->user_id], ["tanggal", "=", $start_date]])->first();
+            if ($cekin && $cekout) {
             } else {
-                Izin::create([
-                    "user_id" => $request->user_id,
-                    "jenis" => $request->jenis,
-                    "keterangan" => $request->keterangan,
-                    "tanggal" => $start_date->format("Y-m-d"),
-                ]);
                 Cekin::create([
                     "user_id" => $request->user_id,
                     "keterangan" => "Izin",
@@ -211,6 +214,17 @@ class ApiController extends Controller
                 "keterangan" => $request->keterangan,
                 "tanggal" => $request->start_date
             ]
+        ];
+        return response()->json($data);
+    }
+
+    public function getUserIzin(User $user)
+    {
+        $izin = Izin::where([['user_id', "=", $user->id]])->get();
+        $data = [
+            "status" => "berhasil",
+            "keterangan" => "Berhasil mengambil data izin",
+            "data" => $izin
         ];
         return response()->json($data);
     }
