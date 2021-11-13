@@ -228,4 +228,15 @@ class ApiController extends Controller
         ];
         return response()->json($data);
     }
+
+    public function getUserAktivitas(User $user)
+    {
+        $aktivitas = Cekout::where([['user_id', "=", $user->id]])->get();
+        $data = [
+            "status" => "berhasil",
+            "keterangan" => "Berhasil mengambil data aktivitas",
+            "data" => $aktivitas
+        ];
+        return response()->json($data);
+    }
 }
