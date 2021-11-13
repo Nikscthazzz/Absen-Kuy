@@ -23,6 +23,7 @@ Route::get('/getdatauser/{user}', [ApiController::class, 'getDataUser']);
 Route::get('/getusercekincekout/{user}', [ApiController::class, 'getUserCekinCekout']);
 Route::get('/getuserizin/{user}', [ApiController::class, 'getUserIzin']);
 Route::get('/getuseraktivitas/{user}', [ApiController::class, 'getUserAktivitas']);
+Route::get('/getuserabsen/{user}', [ApiController::class, 'getUserAbsen']);
 
 Route::post('/login', [ApiController::class, 'login']);
 

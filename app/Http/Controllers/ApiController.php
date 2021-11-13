@@ -239,4 +239,53 @@ class ApiController extends Controller
         ];
         return response()->json($data);
     }
+    public function getUserAbsen(User $user)
+    {
+        // looping tanggal bulan ini
+        $start_date = Carbon::now()->startOfMonth();
+        $end_date = Carbon::now();
+        $hadir = 0;
+        $tidak_hadir = 0;
+        $izin = 0;
+
+        $data_cekin_cekout = [];
+        while (!$start_date->isSameDay($end_date)) {
+            $cekin = Cekin::where([['user_id', "=", $user->id], ["tanggal", "=", $start_date]])->first();
+            $cekout = Cekout::where([['user_id', "=", $user->id], ["tanggal", "=", $start_date]])->first();
+            if ($cekin && $cekout) {
+                if ($cekin->keterangan == "On Time" && $cekout->keterangan == "On Time") {
+                    $data_cekin_cekout[] = [
+                        "tanggal" => $start_date->format("Y-m-d"),
+                        "jam_cekin" => $cekin->jam,
+                        "jam_cekout" => $cekout->jam,
+                        "lokasi_cekin" => $cekin->latitude . "," . $cekin->longitude,
+                        "lokasi_cekout" => $cekout->latitude . "," . $cekout->longitude,
+                    ];
+                    $hadir++;
+                } else {
+                    $data_cekin_cekout[] = [
+                        "tanggal" => $start_date->format("Y-m-d"),
+                        "jam_cekin" => $cekin->jam,
+                        "jam_cekout" => $cekout->jam,
+                        "lokasi_cekin" => null,
+                        "lokasi_cekout" => null,
+                    ];
+                    $izin++;
+                }
+            } else {
+                $tidak_hadir++;
+            }
+            $start_date->addDay();
+        }
+
+        $data = [
+            "status" => "berhasil",
+            "keterangan" => "Berhasil mengambil data aktivitas",
+            "hadir" => $hadir,
+            "tidak_hadir" => $tidak_hadir,
+            "izin" => $izin,
+            "data" => $data_cekin_cekout
+        ];
+        return response()->json($data);
+    }
 }
