@@ -188,7 +188,7 @@ class ApiController extends Controller
             } else {
                 Cekin::create([
                     "user_id" => $request->user_id,
-                    "keterangan" => "Izin",
+                    "keterangan" => $request->jenis,
                     "jam" => "Auto Record",
                     "tanggal" => $start_date->format("Y-m-d"),
                     "latitude" => null,
@@ -196,10 +196,10 @@ class ApiController extends Controller
                 ]);
                 Cekout::create([
                     "user_id" => $request->user_id,
-                    "keterangan" => "Izin",
+                    "keterangan" => $request->jenis,
                     "jam" => "Auto Record",
                     "tanggal" => $start_date->format("Y-m-d"),
-                    "kegiatan" => "Izin",
+                    "kegiatan" => $request->jenis,
                     "latitude" => null,
                     "longitude" => null
                 ]);
@@ -232,10 +232,17 @@ class ApiController extends Controller
     public function getUserAktivitas(User $user)
     {
         $aktivitas = Cekout::where([['user_id', "=", $user->id]])->get();
+        $waktu = Cekout::where([['user_id', "=", $user->id]])->pluck('tanggal');
+        // ubah bahasa Carbon ke Indonesia
+        $waktu = $waktu->map(function ($item) {
+            return Carbon::parse($item)->locale('id')->isoFormat('dddd, D MMMM Y');
+        });
+
         $data = [
             "status" => "berhasil",
             "keterangan" => "Berhasil mengambil data aktivitas",
-            "data" => $aktivitas
+            "data" => $aktivitas,
+            "waktu" => $waktu
         ];
         return response()->json($data);
     }
@@ -255,20 +262,47 @@ class ApiController extends Controller
             if ($cekin && $cekout) {
                 if ($cekin->keterangan == "On Time" && $cekout->keterangan == "On Time") {
                     $data_cekin_cekout[] = [
-                        "tanggal" => $start_date->format("Y-m-d"),
+                        "tanggal" => Carbon::parse($start_date)->locale('id')->isoFormat('dddd, D MMMM Y'),
                         "jam_cekin" => $cekin->jam,
                         "jam_cekout" => $cekout->jam,
                         "lokasi_cekin" => $cekin->latitude . "," . $cekin->longitude,
                         "lokasi_cekout" => $cekout->latitude . "," . $cekout->longitude,
                     ];
                     $hadir++;
-                } else {
+                } elseif ($cekin->keterangan == "Terlambat" && $cekout->keterangan == "On Time") {
                     $data_cekin_cekout[] = [
-                        "tanggal" => $start_date->format("Y-m-d"),
+                        "tanggal" => Carbon::parse($start_date)->locale('id')->isoFormat('dddd, D MMMM Y'),
                         "jam_cekin" => $cekin->jam,
                         "jam_cekout" => $cekout->jam,
-                        "lokasi_cekin" => null,
-                        "lokasi_cekout" => null,
+                        "lokasi_cekin" => $cekin->keterangan,
+                        "lokasi_cekout" => $cekout->latitude . "," . $cekout->longitude,
+                    ];
+                    $hadir++;
+                } elseif ($cekin->keterangan == "On Time" && $cekout->keterangan == "Terlambat") {
+                    $data_cekin_cekout[] = [
+                        "tanggal" => Carbon::parse($start_date)->locale('id')->isoFormat('dddd, D MMMM Y'),
+                        "jam_cekin" => $cekin->jam,
+                        "jam_cekout" => $cekout->jam,
+                        "lokasi_cekin" => $cekin->latitude . "," . $cekin->longitude,
+                        "lokasi_cekout" => $cekout->keterangan,
+                    ];
+                    $hadir++;
+                } elseif ($cekin->keterangan == "Terlambat" && $cekout->keterangan == "Terlambat") {
+                    $data_cekin_cekout[] = [
+                        "tanggal" => Carbon::parse($start_date)->locale('id')->isoFormat('dddd, D MMMM Y'),
+                        "jam_cekin" => $cekin->jam,
+                        "jam_cekout" => $cekout->jam,
+                        "lokasi_cekin" => $cekin->keterangan,
+                        "lokasi_cekout" => $cekout->keterangan,
+                    ];
+                    $tidak_hadir++;
+                } else {
+                    $data_cekin_cekout[] = [
+                        "tanggal" => Carbon::parse($start_date)->locale('id')->isoFormat('dddd, D MMMM Y'),
+                        "jam_cekin" => $cekin->jam,
+                        "jam_cekout" => $cekout->jam,
+                        "lokasi_cekin" => $cekin->keterangan,
+                        "lokasi_cekout" => $cekout->keterangan,
                     ];
                     $izin++;
                 }
