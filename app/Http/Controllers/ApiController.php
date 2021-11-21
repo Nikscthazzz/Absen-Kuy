@@ -231,8 +231,8 @@ class ApiController extends Controller
 
     public function getUserAktivitas(User $user)
     {
-        $aktivitas = Cekout::where([['user_id', "=", $user->id]])->get();
-        $waktu = Cekout::where([['user_id', "=", $user->id]])->pluck('tanggal');
+        $aktivitas = Cekout::where([['user_id', "=", $user->id]])->orderBy("tanggal", "DESC")->get();
+        $waktu = Cekout::where([['user_id', "=", $user->id]])->orderBy("tanggal", "DESC")->pluck('tanggal');
         // ubah bahasa Carbon ke Indonesia
         $waktu = $waktu->map(function ($item) {
             return Carbon::parse($item)->locale('id')->isoFormat('dddd, D MMMM Y');
